@@ -6,8 +6,10 @@ build:
 
   system_packages:
     - build-essential
+    - portaudio19-dev
+    - python3-pyaudio
 
-  python_version: 3.10
+  python_version: 3.11
 
   python_packages:
     - librosa
@@ -15,7 +17,9 @@ build:
   run:
     - pip install -U pip
     - pip install --upgrade cython
-    - pip install madmom
-    - pip install BeatNet
+    - pip install numpy
+    - pip install pyaudio
+    - pip install git+https://github.com/CPJKU/madmom
+    - pip install BeatNet 
 
 predict: "predict.py:Predictor"
