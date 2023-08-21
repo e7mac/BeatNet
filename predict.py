@@ -24,6 +24,7 @@ class Predictor(BasePredictor):
         audio: Path = Input(description="Path to the input music. Supports mp3 and wav format."),
         click_track: bool = Input(default=False, description="Option to generate a click track."),
         combine_click_track: bool = Input(default=False, description="Option to generate a click track overlaid on the audio."),
+        detect_downbeat: bool = Input(default=False, description="Click track should emphasize downbeats."),
     ) -> Output:
         """Run a single prediction on the model"""
         estimator = BeatNet(1, mode='offline', inference_model='DBN', plot=[], thread=False)
@@ -32,7 +33,7 @@ class Predictor(BasePredictor):
         with open(beat_filename, 'w') as f:
             json.dump(beats, f)
         if click_track == True:
-            click_filename = self.generateClickTrackFromBeats(beats, beat_filename)
+            click_filename = self.generateClickTrackFromBeats(beats, beat_filename, detect_downbeat=detect_downbeat)
             if combine_click_track == True:
                 combined_filename = self.combineClickTrack(str(audio), click_filename)
                 return Output(beats=Path(beat_filename),click=click_filename,combined=combined_filename)    
